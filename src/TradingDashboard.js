@@ -32,6 +32,8 @@ import {
   Save,
   AlertTriangle,
   ChevronLeft,
+  ChevronUp,
+  ChevronDown,
   ChevronRight,
   ExternalLink,
   Wallet,
@@ -180,6 +182,11 @@ const [newMindNote, setNewMindNote] = useState('');
 // Drag and Drop States
 const [draggedItem, setDraggedItem] = useState(null);
 const [draggedItemType, setDraggedItemType] = useState(null); // 'todo' or 'mindNote'
+
+// Internal Reordering States
+const [draggedOverIndex, setDraggedOverIndex] = useState(null);
+const [draggedItemIndex, setDraggedItemIndex] = useState(null);
+const [isInternalDrag, setIsInternalDrag] = useState(false);
 
   // Daily Habits States
   const [habitColumns, setHabitColumns] = useState([
@@ -664,15 +671,15 @@ const [draggedItemType, setDraggedItemType] = useState(null); // 'todo' or 'mind
   const deleteMindNote = (id) => {
   setMindNotes(mindNotes.filter(note => note.id !== id));
 };
-
-// Drag and Drop Functions
-const handleDragStart = (e, item, itemType) => {
+// Cross-widget Drag and Drop Functions
+const handleTodoMindDragStart = (e, item, itemType) => {
   setDraggedItem(item);
   setDraggedItemType(itemType);
+  setIsInternalDrag(false);
   e.dataTransfer.effectAllowed = 'move';
 };
 
-const handleDragOver = (e) => {
+const handleTodoMindDragOver = (e) => {
   e.preventDefault();
   e.dataTransfer.dropEffect = 'move';
 };
@@ -701,8 +708,6 @@ const handleTodoDrop = (e) => {
     };
     
     setTodos(prevTodos => [...prevTodos, newTodo]);
-    
-    // Remove from mind notes
     setMindNotes(prevNotes => prevNotes.filter(note => note.id !== draggedItem.id));
   }
   
@@ -722,14 +727,296 @@ const handleMindNoteDrop = (e) => {
     };
     
     setMindNotes(prevNotes => [...prevNotes, newMindNote]);
-    
-    // Remove from todos
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== draggedItem.id));
   }
   
   setDraggedItem(null);
   setDraggedItemType(null);
 };
+
+const handleTodoMindDragEnd = () => {
+  setDraggedItem(null);
+  setDraggedItemType(null);
+};
+
+// Internal Reordering Functions
+const handleInternalDragStart = (e, item, index, type) => {
+  setDraggedItem(item);
+  setDraggedItemIndex(index);
+  setDraggedItemType(type);
+  setIsInternalDrag(true);
+  e.dataTransfer.effectAllowed = 'move';
+};
+
+const handleInternalDragOver = (e, index) => {
+  e.preventDefault();
+  setDraggedOverIndex(index);
+  e.dataTransfer.dropEffect = 'move';
+};
+
+const handleInternalDrop = (e, dropIndex, type) => {
+  e.preventDefault();
+  
+  if (!isInternalDrag || draggedItemIndex === null || draggedItemIndex === dropIndex) {
+    resetInternalDragState();
+    return;
+  }
+
+  if (type === 'todo') {
+    const filteredTodos = getFilteredTodos();
+    const newTodos = [...todos];
+    const todoToMove = filteredTodos[draggedItemIndex];
+    const todoAtDrop = filteredTodos[dropIndex];
+    
+    const moveIndex = newTodos.findIndex(t => t.id === todoToMove.id);
+    const dropIndexInFull = newTodos.findIndex(t => t.id === todoAtDrop.id);
+    
+    newTodos.splice(moveIndex, 1);
+    newTodos.splice(dropIndexInFull, 0, todoToMove);
+    setTodos(newTodos);
+  } else if (type === 'mindNote') {
+    const newMindNotes = [...mindNotes];
+    const draggedNote = newMindNotes[draggedItemIndex];
+    newMindNotes.splice(draggedItemIndex, 1);
+    newMindNotes.splice(dropIndex, 0, draggedNote);
+    setMindNotes(newMindNotes);
+  } else if (type === 'urlLink') {
+    const newUrlLinks = [...urlLinks];
+    const draggedLink = newUrlLinks[draggedItemIndex];
+    newUrlLinks.splice(draggedItemIndex, 1);
+    newUrlLinks.splice(dropIndex, 0, draggedLink);
+    setUrlLinks(newUrlLinks);
+  }
+
+  resetInternalDragState();
+};
+
+const resetInternalDragState = () => {
+  setDraggedItem(null);
+  setDraggedItemIndex(null);
+  setDraggedOverIndex(null);
+  setDraggedItemType(null);
+  setIsInternalDrag(false);
+};
+
+const handleInternalDragEnd = () => {
+  resetInternalDragState();
+};
+
+// Move Up/Down Functions
+const moveTodoUp = (index) => {
+  const filteredTodos = getFilteredTodos();
+  if (index > 0) {
+    const currentTodos = [...todos];
+    const todoToMove = filteredTodos[index];
+    const todoAbove = filteredTodos[index - 1];
+    
+    const currentIndex = currentTodos.findIndex(t => t.id === todoToMove.id);
+    const aboveIndex = currentTodos.findIndex(t => t.id === todoAbove.id);
+    
+    [currentTodos[currentIndex], currentTodos[aboveIndex]] = [currentTodos[aboveIndex], currentTodos[currentIndex]];
+    setTodos(currentTodos);
+  }
+};
+
+const moveTodoDown = (index) => {
+  const filteredTodos = getFilteredTodos();
+  if (index < filteredTodos.length - 1) {
+    const currentTodos = [...todos];
+    const todoToMove = filteredTodos[index];
+    const todoBelow = filteredTodos[index + 1];
+    
+    const currentIndex = currentTodos.findIndex(t => t.id === todoToMove.id);
+    const belowIndex = currentTodos.findIndex(t => t.id === todoBelow.id);
+    
+    [currentTodos[currentIndex], currentTodos[belowIndex]] = [currentTodos[belowIndex], currentTodos[currentIndex]];
+    setTodos(currentTodos);
+  }
+};
+
+const moveMindNoteUp = (index) => {
+  if (index > 0) {
+    const newMindNotes = [...mindNotes];
+    [newMindNotes[index - 1], newMindNotes[index]] = [newMindNotes[index], newMindNotes[index - 1]];
+    setMindNotes(newMindNotes);
+  }
+};
+
+const moveMindNoteDown = (index) => {
+  if (index < mindNotes.length - 1) {
+    const newMindNotes = [...mindNotes];
+    [newMindNotes[index], newMindNotes[index + 1]] = [newMindNotes[index + 1], newMindNotes[index]];
+    setMindNotes(newMindNotes);
+  }
+};
+
+const moveUrlLinkUp = (index) => {
+  if (index > 0) {
+    const newUrlLinks = [...urlLinks];
+    [newUrlLinks[index - 1], newUrlLinks[index]] = [newUrlLinks[index], newUrlLinks[index - 1]];
+    setUrlLinks(newUrlLinks);
+  }
+};
+
+const moveUrlLinkDown = (index) => {
+  if (index < urlLinks.length - 1) {
+    const newUrlLinks = [...urlLinks];
+    [newUrlLinks[index], newUrlLinks[index + 1]] = [newUrlLinks[index + 1], newUrlLinks[index]];
+    setUrlLinks(newUrlLinks);
+  }
+};
+
+// Habit Drag and Drop handlers (for habits columns)
+const handleHabitDragStart = (e, columnIndex) => {
+  setDraggedColumn(columnIndex);
+  e.dataTransfer.effectAllowed = 'move';
+};
+
+const handleHabitDragOver = (e) => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+};
+
+const handleHabitDrop = (e, dropIndex) => {
+  e.preventDefault();
+  if (draggedColumn === null) return;
+
+  const draggedItem = habitColumns[draggedColumn];
+  const newColumns = [...habitColumns];
+  
+  // Remove the dragged item
+  newColumns.splice(draggedColumn, 1);
+  
+  // Insert it at the new position
+  const adjustedDropIndex = dropIndex > draggedColumn ? dropIndex - 1 : dropIndex;
+  newColumns.splice(adjustedDropIndex, 0, draggedItem);
+  
+  setHabitColumns(newColumns);
+  setDraggedColumn(null);
+};
+
+// Drag and Drop Functions
+//const handleDragStart = (e, item, itemType) => {
+  //setDraggedItem(item);
+  //setDraggedItemType(itemType);
+  //e.dataTransfer.effectAllowed = 'move';
+//};
+
+//const handleDragOver = (e) => {
+  //e.preventDefault();
+  //e.dataTransfer.dropEffect = 'move';
+//};
+
+  function handleTodoDrop(e) {
+    e.preventDefault();
+
+    // Internal Reordering Functions
+    const handleInternalDragStart = (e, item, index, type) => {
+      setDraggedItem(item);
+      setDraggedItemIndex(index);
+      setDraggedItemType(type);
+      setIsInternalDrag(true);
+      e.dataTransfer.effectAllowed = 'move';
+    };
+
+    const handleInternalDragOver = (e, index) => {
+      e.preventDefault();
+      setDraggedOverIndex(index);
+      e.dataTransfer.dropEffect = 'move';
+    };
+
+    const handleInternalDrop = (e, dropIndex, type) => {
+      e.preventDefault();
+
+      if (!isInternalDrag || draggedItemIndex === null || draggedItemIndex === dropIndex) {
+        resetInternalDragState();
+        return;
+      }
+
+      if (type === 'todo') {
+        const newTodos = [...todos];
+        const draggedTodo = newTodos[draggedItemIndex];
+        newTodos.splice(draggedItemIndex, 1);
+        newTodos.splice(dropIndex, 0, draggedTodo);
+        setTodos(newTodos);
+      } else if (type === 'mindNote') {
+        const newMindNotes = [...mindNotes];
+        const draggedNote = newMindNotes[draggedItemIndex];
+        newMindNotes.splice(draggedItemIndex, 1);
+        newMindNotes.splice(dropIndex, 0, draggedNote);
+        setMindNotes(newMindNotes);
+      } else if (type === 'urlLink') {
+        const newUrlLinks = [...urlLinks];
+        const draggedLink = newUrlLinks[draggedItemIndex];
+        newUrlLinks.splice(draggedItemIndex, 1);
+        newUrlLinks.splice(dropIndex, 0, draggedLink);
+        setUrlLinks(newUrlLinks);
+      }
+
+      resetInternalDragState();
+    };
+
+    const resetInternalDragState = () => {
+      setDraggedItem(null);
+      setDraggedItemIndex(null);
+      setDraggedOverIndex(null);
+      setDraggedItemType(null);
+      setIsInternalDrag(false);
+    };
+
+    const handleInternalDragEnd = () => {
+      resetInternalDragState();
+    };
+    if (draggedItemType === 'mindNote' && draggedItem) {
+      // Convert mind note to todo
+      const newTodo = {
+        id: Date.now(),
+        text: draggedItem.text,
+        completed: false,
+        priority: 0,
+        dueDate: null,
+        dueTime: null,
+        list: selectedList === 'All' ? 'Trading' : selectedList,
+        tags: [],
+        notes: `Converted from mind note on ${new Date().toLocaleDateString()}`,
+        flagged: false,
+        recurring: null,
+        subtasks: [],
+        reminder: null,
+        attachments: [],
+        createdAt: new Date().toISOString()
+      };
+
+      setTodos(prevTodos => [...prevTodos, newTodo]);
+
+      // Remove from mind notes
+      setMindNotes(prevNotes => prevNotes.filter(note => note.id !== draggedItem.id));
+    }
+
+    setDraggedItem(null);
+    setDraggedItemType(null);
+  }
+
+  function handleMindNoteDrop(e) {
+    e.preventDefault();
+
+    if (draggedItemType === 'todo' && draggedItem) {
+      // Convert todo to mind note
+      const newMindNote = {
+        id: Date.now(),
+        text: draggedItem.text,
+        date: new Date().toISOString()
+      };
+
+      setMindNotes(prevNotes => [...prevNotes, newMindNote]);
+
+      // Remove from todos
+      setTodos(prevTodos => prevTodos.filter(todo => todo.id !== draggedItem.id));
+    }
+
+    setDraggedItem(null);
+    setDraggedItemType(null);
+  }
 
 const handleDragEnd = () => {
   setDraggedItem(null);
@@ -1785,9 +2072,9 @@ const handleDragEnd = () => {
                               key={habit.id}
                               className="px-2 py-2 text-center min-w-[60px] cursor-move relative"
                               draggable
-                              onDragStart={(e) => handleDragStart(e, index)}
-                              onDragOver={handleDragOver}
-                              onDrop={(e) => handleDrop(e, index)}
+                             onDragStart={(e) => handleHabitDragStart(e, index)}
+                            onDragOver={handleHabitDragOver}
+                            onDrop={(e) => handleHabitDrop(e, index)}
                             >
                               <div className="flex flex-col items-center group">
                                 {editingHabit === habit.id ? (
@@ -2194,14 +2481,29 @@ const handleDragEnd = () => {
                     
 {/* Todo items */}
 <div className="space-y-1 max-h-64 overflow-y-auto">
-  {getFilteredTodos().map(todo => (
-    <div 
-      key={todo.id} 
-      className={`group relative ${todo.completed ? 'opacity-60' : ''}`}
-      draggable={!todo.completed}
-      onDragStart={(e) => handleDragStart(e, todo, 'todo')}
-      onDragEnd={handleDragEnd}
-    >
+  {getFilteredTodos().map((todo, index) => (
+   <div 
+  key={todo.id} 
+  className={`group relative ${todo.completed ? 'opacity-60' : ''} ${
+    draggedOverIndex === index && isInternalDrag && draggedItemType === 'todo' 
+      ? 'border-t-2 border-blue-500' 
+      : ''
+  }`}
+  draggable={!todo.completed}
+  onDragStart={(e) => {
+    e.stopPropagation();
+    handleInternalDragStart(e, todo, index, 'todo');
+  }}
+  onDragOver={(e) => {
+    e.stopPropagation();
+    handleInternalDragOver(e, index);
+  }}
+  onDrop={(e) => {
+    e.stopPropagation();
+    handleInternalDrop(e, index, 'todo');
+  }}
+  onDragEnd={handleInternalDragEnd}
+>
       <div className={`flex items-start gap-2 p-2 rounded-lg ${
         darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
       } ${selectedTodo?.id === todo.id ? 'ring-2 ring-blue-500' : ''} cursor-move transition-all ${
@@ -2559,16 +2861,31 @@ const handleDragEnd = () => {
                     
                     {/* Notes list */}
 <div className="space-y-2 max-h-48 overflow-y-auto">
-  {mindNotes.map(note => (
+  {mindNotes.map((note, index) => (
     <div 
-      key={note.id} 
-      className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'} cursor-move transition-all ${
-        draggedItem?.id === note.id ? 'opacity-50 scale-95' : ''
-      }`}
-      draggable
-      onDragStart={(e) => handleDragStart(e, note, 'mindNote')}
-      onDragEnd={handleDragEnd}
-    >
+  key={note.id} 
+  className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'} cursor-move transition-all ${
+    draggedItem?.id === note.id ? 'opacity-50 scale-95' : ''
+  } ${
+    draggedOverIndex === index && isInternalDrag && draggedItemType === 'mindNote' 
+      ? 'border-t-2 border-purple-500' 
+      : ''
+  }`}
+  draggable
+  onDragStart={(e) => {
+    e.stopPropagation();
+    handleInternalDragStart(e, note, index, 'mindNote');
+  }}
+  onDragOver={(e) => {
+    e.stopPropagation();
+    handleInternalDragOver(e, index);
+  }}
+  onDrop={(e) => {
+    e.stopPropagation();
+    handleInternalDrop(e, index, 'mindNote');
+  }}
+  onDragEnd={handleInternalDragEnd}
+>
       <p className="text-sm">{note.text}</p>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500">
@@ -2645,10 +2962,30 @@ const handleDragEnd = () => {
                     )}
                     
                     {/* Links list */}
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
-                      {urlLinks.map(link => (
-                        <div key={link.id} className={`flex items-center gap-2 p-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'} transition-colors`}>
-                          <span className="text-lg">{link.icon}</span>
+<div className="space-y-2 max-h-48 overflow-y-auto">
+  {urlLinks.map((link, index) => (
+                        <div 
+  key={link.id} 
+  className={`flex items-center gap-2 p-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'} transition-colors cursor-move ${
+    draggedOverIndex === index && isInternalDrag && draggedItemType === 'urlLink' 
+      ? 'border-t-2 border-blue-500' 
+      : ''
+  }`}
+  draggable
+  onDragStart={(e) => {
+    e.stopPropagation();
+    handleInternalDragStart(e, link, index, 'urlLink');
+  }}
+  onDragOver={(e) => {
+    e.stopPropagation();
+    handleInternalDragOver(e, index);
+  }}
+  onDrop={(e) => {
+    e.stopPropagation();
+    handleInternalDrop(e, index, 'urlLink');
+  }}
+  onDragEnd={handleInternalDragEnd}
+>
                           <a
                             href={link.url}
                             target="_blank"
