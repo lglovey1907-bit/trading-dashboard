@@ -213,31 +213,38 @@ const [draggedItemType, setDraggedItemType] = useState(null); // 'todo' or 'mind
   };
 
   // Get current week's days (Monday to Sunday)
-  const getCurrentWeekDays = () => {
-    const today = new Date();
-    const currentDay = today.getDay();
-    const monday = new Date(today);
-    const diff = currentDay === 0 ? -6 : 1 - currentDay; // If Sunday, go back 6 days
-    monday.setDate(today.getDate() + diff);
+const getCurrentWeekDays = () => {
+  const today = new Date();
+  const currentDay = today.getDay();
+  const monday = new Date(today);
+  const diff = currentDay === 0 ? -6 : 1 - currentDay; // If Sunday, go back 6 days
+  monday.setDate(today.getDate() + diff);
+  
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
     
-    const weekDays = [];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + i);
-      
-      const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i];
-      const isToday = date.toDateString() === today.toDateString();
-      const isYesterday = date.toDateString() === new Date(today.setDate(today.getDate() - 1)).toDateString();
-      
-      weekDays.push({
-        dayName: isToday ? '@Today' : isYesterday ? '@Yesterday' : `@${dayName}`,
-        date: date,
-        dateString: `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`
-      });
-    }
+    const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i];
     
-    return weekDays;
-  };
+    // Fix the today comparison by creating a fresh today date
+    const todayForComparison = new Date();
+    const isToday = date.toDateString() === todayForComparison.toDateString();
+    
+    // Fix yesterday comparison
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+    
+    weekDays.push({
+      dayName: isToday ? '@Today' : isYesterday ? '@Yesterday' : `@${dayName}`,
+      date: date,
+      dateString: `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`
+    });
+  }
+  
+  return weekDays;
+};
 
   const [currentWeek] = useState(getCurrentWeekDays());
   
