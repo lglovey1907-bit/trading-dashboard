@@ -1196,7 +1196,7 @@ const TradingDashboard = () => {
               </button>
               <div className="flex items-center ml-4 lg:ml-0">
                 <TrendingUp className="h-8 w-8 text-blue-600" />
-                <span className="ml-2 text-xl font-bold">TradePro Elite</span>
+                <span className="ml-2 text-xl font-bold">Pattern Pulse</span>
               </div>
             </div>
             
