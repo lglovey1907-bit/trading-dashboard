@@ -213,31 +213,38 @@ const [draggedItemType, setDraggedItemType] = useState(null); // 'todo' or 'mind
   };
 
   // Get current week's days (Monday to Sunday)
-  const getCurrentWeekDays = () => {
-    const today = new Date();
-    const currentDay = today.getDay();
-    const monday = new Date(today);
-    const diff = currentDay === 0 ? -6 : 1 - currentDay; // If Sunday, go back 6 days
-    monday.setDate(today.getDate() + diff);
+const getCurrentWeekDays = () => {
+  const today = new Date();
+  const currentDay = today.getDay();
+  const monday = new Date(today);
+  const diff = currentDay === 0 ? -6 : 1 - currentDay; // If Sunday, go back 6 days
+  monday.setDate(today.getDate() + diff);
+  
+  const weekDays = [];
+  for (let i = 0; i < 7; i++) {
+    const date = new Date(monday);
+    date.setDate(monday.getDate() + i);
     
-    const weekDays = [];
-    for (let i = 0; i < 7; i++) {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + i);
-      
-      const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i];
-      const isToday = date.toDateString() === today.toDateString();
-      const isYesterday = date.toDateString() === new Date(today.setDate(today.getDate() - 1)).toDateString();
-      
-      weekDays.push({
-        dayName: isToday ? '@Today' : isYesterday ? '@Yesterday' : `@${dayName}`,
-        date: date,
-        dateString: `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`
-      });
-    }
+    const dayName = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'][i];
     
-    return weekDays;
-  };
+    // Fix the today comparison by creating a fresh today date
+    const todayForComparison = new Date();
+    const isToday = date.toDateString() === todayForComparison.toDateString();
+    
+    // Fix yesterday comparison
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const isYesterday = date.toDateString() === yesterday.toDateString();
+    
+    weekDays.push({
+      dayName: isToday ? '@Today' : isYesterday ? '@Yesterday' : `@${dayName}`,
+      date: date,
+      dateString: `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`
+    });
+  }
+  
+  return weekDays;
+};
 
   const [currentWeek] = useState(getCurrentWeekDays());
   
@@ -665,14 +672,14 @@ const [draggedItemType, setDraggedItemType] = useState(null); // 'todo' or 'mind
   setMindNotes(mindNotes.filter(note => note.id !== id));
 };
 
-// Drag and Drop Functions
-const handleDragStart = (e, item, itemType) => {
+// Todo/Mind Notes Drag and Drop Functions
+const handleTodoMindDragStart = (e, item, itemType) => {
   setDraggedItem(item);
   setDraggedItemType(itemType);
   e.dataTransfer.effectAllowed = 'move';
 };
 
-const handleDragOver = (e) => {
+const handleTodoMindDragOver = (e) => {
   e.preventDefault();
   e.dataTransfer.dropEffect = 'move';
 };
@@ -681,7 +688,6 @@ const handleTodoDrop = (e) => {
   e.preventDefault();
   
   if (draggedItemType === 'mindNote' && draggedItem) {
-    // Convert mind note to todo
     const newTodo = {
       id: Date.now(),
       text: draggedItem.text,
@@ -701,8 +707,6 @@ const handleTodoDrop = (e) => {
     };
     
     setTodos(prevTodos => [...prevTodos, newTodo]);
-    
-    // Remove from mind notes
     setMindNotes(prevNotes => prevNotes.filter(note => note.id !== draggedItem.id));
   }
   
@@ -714,7 +718,6 @@ const handleMindNoteDrop = (e) => {
   e.preventDefault();
   
   if (draggedItemType === 'todo' && draggedItem) {
-    // Convert todo to mind note
     const newMindNote = {
       id: Date.now(),
       text: draggedItem.text,
@@ -722,8 +725,6 @@ const handleMindNoteDrop = (e) => {
     };
     
     setMindNotes(prevNotes => [...prevNotes, newMindNote]);
-    
-    // Remove from todos
     setTodos(prevTodos => prevTodos.filter(todo => todo.id !== draggedItem.id));
   }
   
@@ -731,7 +732,7 @@ const handleMindNoteDrop = (e) => {
   setDraggedItemType(null);
 };
 
-const handleDragEnd = () => {
+const handleTodoMindDragEnd = () => {
   setDraggedItem(null);
   setDraggedItemType(null);
 };
@@ -2076,7 +2077,7 @@ const handleDragEnd = () => {
 <div 
   className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
   onDrop={handleTodoDrop}
-  onDragOver={handleDragOver}
+  onDragOver={handleTodoMindDragOver}
 >
   <div className="flex items-center justify-between mb-3">
     <h2 className="text-base font-semibold flex items-center">
@@ -2199,8 +2200,8 @@ const handleDragEnd = () => {
       key={todo.id} 
       className={`group relative ${todo.completed ? 'opacity-60' : ''}`}
       draggable={!todo.completed}
-      onDragStart={(e) => handleDragStart(e, todo, 'todo')}
-      onDragEnd={handleDragEnd}
+      onDragStart={(e) => handleTodoMindDragStart(e, todo, 'todo')}
+      onDragEnd={handleTodoMindDragEnd}
     >
       <div className={`flex items-start gap-2 p-2 rounded-lg ${
         darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
@@ -2524,7 +2525,7 @@ const handleDragEnd = () => {
 <div 
   className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
   onDrop={handleMindNoteDrop}
-  onDragOver={handleDragOver}
+  onDragOver={handleTodoMindDragOver}
 >
   <div className="flex items-center justify-between mb-3">
     <h2 className="text-base font-semibold flex items-center">
@@ -2566,8 +2567,8 @@ const handleDragEnd = () => {
         draggedItem?.id === note.id ? 'opacity-50 scale-95' : ''
       }`}
       draggable
-      onDragStart={(e) => handleDragStart(e, note, 'mindNote')}
-      onDragEnd={handleDragEnd}
+      onDragStart={(e) => handleTodoMindDragStart(e, note, 'mindNote')}
+      onDragEnd={handleTodoMindDragEnd}
     >
       <p className="text-sm">{note.text}</p>
                           <div className="flex justify-between items-center mt-1">
