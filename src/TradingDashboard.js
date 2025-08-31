@@ -171,11 +171,15 @@ const TradingDashboard = () => {
   const [showAddLink, setShowAddLink] = useState(false);
 
   // Mind Notes States
-  const [mindNotes, setMindNotes] = useState([
-    { id: 1, text: 'Market might correct after 20,000 NIFTY', date: new Date().toISOString() },
-    { id: 2, text: 'Consider hedging positions before RBI meeting', date: new Date().toISOString() }
-  ]);
-  const [newMindNote, setNewMindNote] = useState('');
+const [mindNotes, setMindNotes] = useState([
+  { id: 1, text: 'Market might correct after 20,000 NIFTY', date: new Date().toISOString() },
+  { id: 2, text: 'Consider hedging positions before RBI meeting', date: new Date().toISOString() }
+]);
+const [newMindNote, setNewMindNote] = useState('');
+
+// Drag and Drop States
+const [draggedItem, setDraggedItem] = useState(null);
+const [draggedItemType, setDraggedItemType] = useState(null); // 'todo' or 'mindNote'
 
   // Daily Habits States
   const [habitColumns, setHabitColumns] = useState([
@@ -658,8 +662,79 @@ const TradingDashboard = () => {
   };
 
   const deleteMindNote = (id) => {
-    setMindNotes(mindNotes.filter(note => note.id !== id));
-  };
+  setMindNotes(mindNotes.filter(note => note.id !== id));
+};
+
+// Drag and Drop Functions
+const handleDragStart = (e, item, itemType) => {
+  setDraggedItem(item);
+  setDraggedItemType(itemType);
+  e.dataTransfer.effectAllowed = 'move';
+};
+
+const handleDragOver = (e) => {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+};
+
+const handleTodoDrop = (e) => {
+  e.preventDefault();
+  
+  if (draggedItemType === 'mindNote' && draggedItem) {
+    // Convert mind note to todo
+    const newTodo = {
+      id: Date.now(),
+      text: draggedItem.text,
+      completed: false,
+      priority: 0,
+      dueDate: null,
+      dueTime: null,
+      list: selectedList === 'All' ? 'Trading' : selectedList,
+      tags: [],
+      notes: `Converted from mind note on ${new Date().toLocaleDateString()}`,
+      flagged: false,
+      recurring: null,
+      subtasks: [],
+      reminder: null,
+      attachments: [],
+      createdAt: new Date().toISOString()
+    };
+    
+    setTodos(prevTodos => [...prevTodos, newTodo]);
+    
+    // Remove from mind notes
+    setMindNotes(prevNotes => prevNotes.filter(note => note.id !== draggedItem.id));
+  }
+  
+  setDraggedItem(null);
+  setDraggedItemType(null);
+};
+
+const handleMindNoteDrop = (e) => {
+  e.preventDefault();
+  
+  if (draggedItemType === 'todo' && draggedItem) {
+    // Convert todo to mind note
+    const newMindNote = {
+      id: Date.now(),
+      text: draggedItem.text,
+      date: new Date().toISOString()
+    };
+    
+    setMindNotes(prevNotes => [...prevNotes, newMindNote]);
+    
+    // Remove from todos
+    setTodos(prevTodos => prevTodos.filter(todo => todo.id !== draggedItem.id));
+  }
+  
+  setDraggedItem(null);
+  setDraggedItemType(null);
+};
+
+const handleDragEnd = () => {
+  setDraggedItem(null);
+  setDraggedItemType(null);
+};
 
   // Daily Habits Functions
   const toggleHabit = (day, habitId) => {
@@ -1998,12 +2073,21 @@ const TradingDashboard = () => {
                 {/* Second Row: To-Do List and Things in My Mind (Available without login) */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* To-Do List Widget with Apple Reminders Features */}
-                  <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <h2 className="text-base font-semibold flex items-center">
-                        <CheckSquare className="mr-2" size={16} />
-                        Reminders
-                      </h2>
+<div 
+  className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
+  onDrop={handleTodoDrop}
+  onDragOver={handleDragOver}
+>
+  <div className="flex items-center justify-between mb-3">
+    <h2 className="text-base font-semibold flex items-center">
+      <CheckSquare className="mr-2" size={16} />
+      Reminders
+      {draggedItemType === 'mindNote' && (
+        <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full animate-pulse">
+          Drop to add task
+        </span>
+      )}
+    </h2>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-gray-500">{todos.filter(t => !t.completed).length} pending</span>
                         <button
@@ -2108,16 +2192,21 @@ const TradingDashboard = () => {
                       </button>
                     </div>
                     
-                    {/* Todo items */}
-                    <div className="space-y-1 max-h-64 overflow-y-auto">
-                      {getFilteredTodos().map(todo => (
-                        <div
-                          key={todo.id}
-                          className={`group relative ${todo.completed ? 'opacity-60' : ''}`}
-                        >
-                          <div className={`flex items-start gap-2 p-2 rounded-lg ${
-                            darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
-                          } ${selectedTodo?.id === todo.id ? 'ring-2 ring-blue-500' : ''}`}>
+{/* Todo items */}
+<div className="space-y-1 max-h-64 overflow-y-auto">
+  {getFilteredTodos().map(todo => (
+    <div 
+      key={todo.id} 
+      className={`group relative ${todo.completed ? 'opacity-60' : ''}`}
+      draggable={!todo.completed}
+      onDragStart={(e) => handleDragStart(e, todo, 'todo')}
+      onDragEnd={handleDragEnd}
+    >
+      <div className={`flex items-start gap-2 p-2 rounded-lg ${
+        darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
+      } ${selectedTodo?.id === todo.id ? 'ring-2 ring-blue-500' : ''} cursor-move transition-all ${
+        draggedItem?.id === todo.id ? 'opacity-50 scale-95' : ''
+      }`}>
                             <button
                               onClick={() => toggleTodo(todo.id)}
                               className={`mt-0.5 ${todo.completed ? 'text-green-500' : 'text-gray-400'}`}
@@ -2431,15 +2520,24 @@ const TradingDashboard = () => {
                     </div>
                   )}
 
-                  {/* Things in My Mind Widget */}
-                  <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}>
-                    <div className="flex items-center justify-between mb-3">
-                      <h2 className="text-base font-semibold flex items-center">
-                        <Brain className="mr-2" size={16} />
-                        Things in My Mind
-                      </h2>
-                      <span className="text-xs text-gray-500">{mindNotes.length} notes</span>
-                    </div>
+{/* Things in My Mind Widget */}
+<div 
+  className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
+  onDrop={handleMindNoteDrop}
+  onDragOver={handleDragOver}
+>
+  <div className="flex items-center justify-between mb-3">
+    <h2 className="text-base font-semibold flex items-center">
+      <Brain className="mr-2" size={16} />
+      Things in My Mind
+      {draggedItemType === 'todo' && (
+        <span className="ml-2 px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full animate-pulse">
+          Drop to add thought
+        </span>
+      )}
+    </h2>
+    <span className="text-xs text-gray-500">{mindNotes.length} notes</span>
+  </div>
                     
                     {/* Add new note */}
                     <div className="flex gap-2 mb-3">
@@ -2460,10 +2558,18 @@ const TradingDashboard = () => {
                     </div>
                     
                     {/* Notes list */}
-                    <div className="space-y-2 max-h-48 overflow-y-auto">
-                      {mindNotes.map(note => (
-                        <div key={note.id} className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
-                          <p className="text-sm">{note.text}</p>
+<div className="space-y-2 max-h-48 overflow-y-auto">
+  {mindNotes.map(note => (
+    <div 
+      key={note.id} 
+      className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'} cursor-move transition-all ${
+        draggedItem?.id === note.id ? 'opacity-50 scale-95' : ''
+      }`}
+      draggable
+      onDragStart={(e) => handleDragStart(e, note, 'mindNote')}
+      onDragEnd={handleDragEnd}
+    >
+      <p className="text-sm">{note.text}</p>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500">
                               {new Date(note.date).toLocaleDateString()}
