@@ -686,6 +686,118 @@ const handleTodoMindDragOver = (e) => {
 
 const handleTodoDrop = (e) => {
   e.preventDefault();
+  // Internal Reordering Functions
+    const handleInternalDragStart = (e, item, index, type) => {
+      setDraggedItem(item);
+      setDraggedItemIndex(index);
+      setDraggedItemType(type);
+      setIsInternalDrag(true);
+      e.dataTransfer.effectAllowed = 'move';
+    };
+
+    const handleInternalDragOver = (e, index) => {
+      e.preventDefault();
+      setDraggedOverIndex(index);
+      e.dataTransfer.dropEffect = 'move';
+    };
+
+    const handleInternalDrop = (e, dropIndex, type) => {
+      e.preventDefault();
+
+      if (!isInternalDrag || draggedItemIndex === null || draggedItemIndex === dropIndex) {
+        resetInternalDragState();
+        return;
+      }
+
+      if (type === 'todo') {
+        const newTodos = [...todos];
+        const draggedTodo = newTodos[draggedItemIndex];
+        newTodos.splice(draggedItemIndex, 1);
+        newTodos.splice(dropIndex, 0, draggedTodo);
+        setTodos(newTodos);
+      } else if (type === 'mindNote') {
+        const newMindNotes = [...mindNotes];
+        const draggedNote = newMindNotes[draggedItemIndex];
+        newMindNotes.splice(draggedItemIndex, 1);
+        newMindNotes.splice(dropIndex, 0, draggedNote);
+        setMindNotes(newMindNotes);
+      } else if (type === 'urlLink') {
+        const newUrlLinks = [...urlLinks];
+        const draggedLink = newUrlLinks[draggedItemIndex];
+        newUrlLinks.splice(draggedItemIndex, 1);
+        newUrlLinks.splice(dropIndex, 0, draggedLink);
+        setUrlLinks(newUrlLinks);
+      }
+
+      resetInternalDragState();
+    };
+
+    const resetInternalDragState = () => {
+      setDraggedItem(null);
+      setDraggedItemIndex(null);
+      setDraggedOverIndex(null);
+      setDraggedItemType(null);
+      setIsInternalDrag(false);
+    };
+
+    const handleInternalDragEnd = () => {
+      resetInternalDragState();
+    };
+    if (draggedItemType === 'mindNote' && draggedItem) {
+      // Convert mind note to todo
+      const newTodo = {
+        id: Date.now(),
+        text: draggedItem.text,
+        completed: false,
+        priority: 0,
+        dueDate: null,
+        dueTime: null,
+        list: selectedList === 'All' ? 'Trading' : selectedList,
+        tags: [],
+        notes: `Converted from mind note on ${new Date().toLocaleDateString()}`,
+        flagged: false,
+        recurring: null,
+        subtasks: [],
+        reminder: null,
+        attachments: [],
+        createdAt: new Date().toISOString()
+      };
+
+      setTodos(prevTodos => [...prevTodos, newTodo]);
+
+      // Remove from mind notes
+      setMindNotes(prevNotes => prevNotes.filter(note => note.id !== draggedItem.id));
+    }
+
+    setDraggedItem(null);
+    setDraggedItemType(null);
+  }
+
+  function handleMindNoteDrop(e) {
+    e.preventDefault();
+
+    if (draggedItemType === 'todo' && draggedItem) {
+      // Convert todo to mind note
+      const newMindNote = {
+        id: Date.now(),
+        text: draggedItem.text,
+        date: new Date().toISOString()
+      };
+
+      setMindNotes(prevNotes => [...prevNotes, newMindNote]);
+
+      // Remove from todos
+      setTodos(prevTodos => prevTodos.filter(todo => todo.id !== draggedItem.id));
+    }
+
+    setDraggedItem(null);
+    setDraggedItemType(null);
+  }
+
+const handleDragEnd = () => {
+  setDraggedItem(null);
+  setDraggedItemType(null);
+};
   
   if (draggedItemType === 'mindNote' && draggedItem) {
     // Convert mind note to todo
@@ -907,121 +1019,10 @@ const handleHabitDrop = (e, dropIndex) => {
   //e.dataTransfer.dropEffect = 'move';
 //};
 
-  function handleTodoDrop(e) {
-    e.preventDefault();
+  //function handleTodoDrop(e) {
+    //e.preventDefault();
 
-    // Internal Reordering Functions
-    const handleInternalDragStart = (e, item, index, type) => {
-      setDraggedItem(item);
-      setDraggedItemIndex(index);
-      setDraggedItemType(type);
-      setIsInternalDrag(true);
-      e.dataTransfer.effectAllowed = 'move';
-    };
-
-    const handleInternalDragOver = (e, index) => {
-      e.preventDefault();
-      setDraggedOverIndex(index);
-      e.dataTransfer.dropEffect = 'move';
-    };
-
-    const handleInternalDrop = (e, dropIndex, type) => {
-      e.preventDefault();
-
-      if (!isInternalDrag || draggedItemIndex === null || draggedItemIndex === dropIndex) {
-        resetInternalDragState();
-        return;
-      }
-
-      if (type === 'todo') {
-        const newTodos = [...todos];
-        const draggedTodo = newTodos[draggedItemIndex];
-        newTodos.splice(draggedItemIndex, 1);
-        newTodos.splice(dropIndex, 0, draggedTodo);
-        setTodos(newTodos);
-      } else if (type === 'mindNote') {
-        const newMindNotes = [...mindNotes];
-        const draggedNote = newMindNotes[draggedItemIndex];
-        newMindNotes.splice(draggedItemIndex, 1);
-        newMindNotes.splice(dropIndex, 0, draggedNote);
-        setMindNotes(newMindNotes);
-      } else if (type === 'urlLink') {
-        const newUrlLinks = [...urlLinks];
-        const draggedLink = newUrlLinks[draggedItemIndex];
-        newUrlLinks.splice(draggedItemIndex, 1);
-        newUrlLinks.splice(dropIndex, 0, draggedLink);
-        setUrlLinks(newUrlLinks);
-      }
-
-      resetInternalDragState();
-    };
-
-    const resetInternalDragState = () => {
-      setDraggedItem(null);
-      setDraggedItemIndex(null);
-      setDraggedOverIndex(null);
-      setDraggedItemType(null);
-      setIsInternalDrag(false);
-    };
-
-    const handleInternalDragEnd = () => {
-      resetInternalDragState();
-    };
-    if (draggedItemType === 'mindNote' && draggedItem) {
-      // Convert mind note to todo
-      const newTodo = {
-        id: Date.now(),
-        text: draggedItem.text,
-        completed: false,
-        priority: 0,
-        dueDate: null,
-        dueTime: null,
-        list: selectedList === 'All' ? 'Trading' : selectedList,
-        tags: [],
-        notes: `Converted from mind note on ${new Date().toLocaleDateString()}`,
-        flagged: false,
-        recurring: null,
-        subtasks: [],
-        reminder: null,
-        attachments: [],
-        createdAt: new Date().toISOString()
-      };
-
-      setTodos(prevTodos => [...prevTodos, newTodo]);
-
-      // Remove from mind notes
-      setMindNotes(prevNotes => prevNotes.filter(note => note.id !== draggedItem.id));
-    }
-
-    setDraggedItem(null);
-    setDraggedItemType(null);
-  }
-
-  function handleMindNoteDrop(e) {
-    e.preventDefault();
-
-    if (draggedItemType === 'todo' && draggedItem) {
-      // Convert todo to mind note
-      const newMindNote = {
-        id: Date.now(),
-        text: draggedItem.text,
-        date: new Date().toISOString()
-      };
-
-      setMindNotes(prevNotes => [...prevNotes, newMindNote]);
-
-      // Remove from todos
-      setTodos(prevTodos => prevTodos.filter(todo => todo.id !== draggedItem.id));
-    }
-
-    setDraggedItem(null);
-    setDraggedItemType(null);
-  }
-
-const handleDragEnd = () => {
-  setDraggedItem(null);
-  setDraggedItemType(null);
-};
+    
 
   // Daily Habits Functions
   const toggleHabit = (day, habitId) => {
@@ -4018,6 +4019,6 @@ const handleDragEnd = () => {
       </div>
     </div>
   );
-};
+;
 
 export default TradingDashboard;
