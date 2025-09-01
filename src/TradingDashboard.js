@@ -51,7 +51,7 @@ import {
 } from 'lucide-react';
 import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
-const TradingDashboard = () => {
+  const TradingDashboard = () => {
   const [darkMode, setDarkMode] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -1544,6 +1544,10 @@ const handleHabitDrop = (e, dropIndex) => {
     );
   };
 
+  // This return should be inside your main component function
+// Make sure it's wrapped in something like:
+//const TradingDashboard = () => {
+  // ... your component logic above ...
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
       {/* Header */}
