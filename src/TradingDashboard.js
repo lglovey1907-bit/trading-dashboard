@@ -1543,13 +1543,13 @@ const theme = darkMode ? 'dark' : 'light';
         {broker === 'upstox' ? 'U' : 'A'}
       </div>
     );
-  };
+  
 
   // This return should be inside your main component function
 // Make sure it's wrapped in something like:
 //const TradingDashboard = () => {
   // ... your component logic above ...
-{
+
 
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
