@@ -52,6 +52,7 @@ import {
 import { LineChart, Line, BarChart, Bar, PieChart as RePieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts';
 
   const TradingDashboard = () => {
+    // ALL STATE VARIABLES
   const [darkMode, setDarkMode] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -1528,7 +1529,7 @@ const handleHabitDrop = (e, dropIndex) => {
     });
   };
 
-  const theme = darkMode ? 'dark' : 'light';
+const theme = darkMode ? 'dark' : 'light';
 
   // Broker Icons Component
   const BrokerIcon = ({ broker }) => {
@@ -1548,6 +1549,8 @@ const handleHabitDrop = (e, dropIndex) => {
 // Make sure it's wrapped in something like:
 //const TradingDashboard = () => {
   // ... your component logic above ...
+{
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${darkMode ? 'bg-gray-900 text-white' : 'bg-gray-50 text-gray-900'}`}>
       {/* Header */}
@@ -1566,7 +1569,7 @@ const handleHabitDrop = (e, dropIndex) => {
                 <span className="ml-2 text-xl font-bold">Pattern Pulse</span>
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setDarkMode(!darkMode)}
@@ -1574,7 +1577,7 @@ const handleHabitDrop = (e, dropIndex) => {
               >
                 {darkMode ? <Sun size={20} /> : <Moon size={20} />}
               </button>
-              
+
               {!isAuthenticated ? (
                 <button
                   onClick={() => setIsAuthenticated(true)}
@@ -1583,7 +1586,8 @@ const handleHabitDrop = (e, dropIndex) => {
                   <LogIn size={16} className="mr-2" />
                   Login
                 </button>
-              ) : (
+              ):             
+              (
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
                     <User size={16} className="text-white" />
@@ -1595,7 +1599,7 @@ const handleHabitDrop = (e, dropIndex) => {
           </div>
         </div>
       </header>
-
+    
       {/* Broker Panel - Right Side */}
       <div className={`fixed right-0 top-20 z-40 transition-transform duration-300 ${brokerPanelOpen ? 'translate-x-0' : 'translate-x-full'}`}>
         <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} shadow-2xl rounded-l-xl`}>
@@ -1620,12 +1624,10 @@ const handleHabitDrop = (e, dropIndex) => {
                 onClick={() => {
                   setSelectedBroker('upstox');
                   setBrokerLoginModal(true);
-                }}
-                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  selectedBroker === 'upstox'
+                } }
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${selectedBroker === 'upstox'
                     ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                    : darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'
-                }`}
+                    : darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -1643,12 +1645,10 @@ const handleHabitDrop = (e, dropIndex) => {
                 onClick={() => {
                   setSelectedBroker('angelone');
                   setBrokerLoginModal(true);
-                }}
-                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                  selectedBroker === 'angelone'
+                } }
+                className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${selectedBroker === 'angelone'
                     ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                    : darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'
-                }`}
+                    : darkMode ? 'border-gray-700 hover:border-gray-600' : 'border-gray-200 hover:border-gray-300'}`}
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
@@ -1725,36 +1725,30 @@ const handleHabitDrop = (e, dropIndex) => {
                   <input
                     type="text"
                     placeholder="User ID"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                   <input
                     type="password"
                     placeholder="Password"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                   <input
                     type="text"
                     placeholder="PIN"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                 </>
               ) : (
                 <>
                   <input
                     type="text"
                     placeholder="Client ID"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                   <input
                     type="password"
                     placeholder="Password"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                   <input
                     type="text"
                     placeholder="MPIN"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                 </>
               )}
 
@@ -1790,20 +1784,18 @@ const handleHabitDrop = (e, dropIndex) => {
                   <input
                     type="text"
                     value={quickTradeData.symbol}
-                    onChange={(e) => setQuickTradeData({...quickTradeData, symbol: e.target.value})}
+                    onChange={(e) => setQuickTradeData({ ...quickTradeData, symbol: e.target.value })}
                     placeholder="e.g., RELIANCE"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                 </div>
                 <div>
                   <label className="block text-sm font-medium mb-1">Quantity</label>
                   <input
                     type="number"
                     value={quickTradeData.quantity}
-                    onChange={(e) => setQuickTradeData({...quickTradeData, quantity: e.target.value})}
+                    onChange={(e) => setQuickTradeData({ ...quickTradeData, quantity: e.target.value })}
                     placeholder="100"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                 </div>
               </div>
 
@@ -1812,7 +1804,7 @@ const handleHabitDrop = (e, dropIndex) => {
                   <label className="block text-sm font-medium mb-1">Order Type</label>
                   <select
                     value={quickTradeData.orderType}
-                    onChange={(e) => setQuickTradeData({...quickTradeData, orderType: e.target.value})}
+                    onChange={(e) => setQuickTradeData({ ...quickTradeData, orderType: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
                   >
                     <option value="MARKET">Market</option>
@@ -1825,7 +1817,7 @@ const handleHabitDrop = (e, dropIndex) => {
                   <label className="block text-sm font-medium mb-1">Product</label>
                   <select
                     value={quickTradeData.product}
-                    onChange={(e) => setQuickTradeData({...quickTradeData, product: e.target.value})}
+                    onChange={(e) => setQuickTradeData({ ...quickTradeData, product: e.target.value })}
                     className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
                   >
                     <option value="CNC">CNC</option>
@@ -1841,10 +1833,9 @@ const handleHabitDrop = (e, dropIndex) => {
                   <input
                     type="number"
                     value={quickTradeData.price}
-                    onChange={(e) => setQuickTradeData({...quickTradeData, price: e.target.value})}
+                    onChange={(e) => setQuickTradeData({ ...quickTradeData, price: e.target.value })}
                     placeholder="Enter price"
-                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                  />
+                    className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                 </div>
               )}
 
@@ -1882,16 +1873,12 @@ const handleHabitDrop = (e, dropIndex) => {
                 onClick={() => {
                   setActiveTab(item.id);
                   setSidebarOpen(false);
-                }}
-                className={`${
-                  activeTab === item.id
+                } }
+                className={`${activeTab === item.id
                     ? darkMode ? 'bg-gray-700 text-blue-400' : 'bg-blue-50 text-blue-700'
-                    : darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-50'
-                } group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full transition-colors`}
+                    : darkMode ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-600 hover:bg-gray-50'} group flex items-center px-2 py-2 text-sm font-medium rounded-md w-full transition-colors`}
               >
-                <item.icon className={`${
-                  activeTab === item.id ? 'text-blue-500' : 'text-gray-400'
-                } mr-3 flex-shrink-0 h-5 w-5`} />
+                <item.icon className={`${activeTab === item.id ? 'text-blue-500' : 'text-gray-400'} mr-3 flex-shrink-0 h-5 w-5`} />
                 {item.name}
               </button>
             ))}
@@ -1918,7 +1905,7 @@ const handleHabitDrop = (e, dropIndex) => {
                       {editingCapital ? 'Save' : 'Edit'}
                     </button>
                   </div>
-                  
+
                   {/* Total Capital and Cash Reserve - Same Row */}
                   <div className="grid grid-cols-2 gap-2 mb-3">
                     <div className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'}`}>
@@ -1927,9 +1914,8 @@ const handleHabitDrop = (e, dropIndex) => {
                         <input
                           type="number"
                           value={capitalAllocation.total}
-                          onChange={(e) => setCapitalAllocation({...capitalAllocation, total: Number(e.target.value)})}
-                          className={`w-full mt-1 px-2 py-1 text-sm font-bold rounded ${darkMode ? 'bg-gray-600' : 'bg-white'} border ${darkMode ? 'border-gray-500' : 'border-gray-300'}`}
-                        />
+                          onChange={(e) => setCapitalAllocation({ ...capitalAllocation, total: Number(e.target.value) })}
+                          className={`w-full mt-1 px-2 py-1 text-sm font-bold rounded ${darkMode ? 'bg-gray-600' : 'bg-white'} border ${darkMode ? 'border-gray-500' : 'border-gray-300'}`} />
                       ) : (
                         <p className="text-lg font-bold">{formatIndianNumber(capitalAllocation.total)}</p>
                       )}
@@ -1939,7 +1925,7 @@ const handleHabitDrop = (e, dropIndex) => {
                       <p className="text-lg font-bold text-green-500">{formatIndianNumber(capitalAllocation.cash)}</p>
                     </div>
                   </div>
-                  
+
                   {/* Asset Allocation - All in one row */}
                   <div className="grid grid-cols-4 gap-1">
                     {['equity', 'options', 'futures', 'commodities'].map((asset) => (
@@ -1960,9 +1946,8 @@ const handleHabitDrop = (e, dropIndex) => {
                                   available: newValue - deployed
                                 }
                               });
-                            }}
-                            className={`w-full mt-1 px-1 py-0.5 text-xs font-bold rounded ${darkMode ? 'bg-gray-600' : 'bg-white'} border ${darkMode ? 'border-gray-500' : 'border-gray-300'}`}
-                          />
+                            } }
+                            className={`w-full mt-1 px-1 py-0.5 text-xs font-bold rounded ${darkMode ? 'bg-gray-600' : 'bg-white'} border ${darkMode ? 'border-gray-500' : 'border-gray-300'}`} />
                         ) : (
                           <>
                             <p className="text-sm font-bold">{formatIndianNumber(capitalAllocation[asset].allocated)}</p>
@@ -1993,15 +1978,14 @@ const handleHabitDrop = (e, dropIndex) => {
                           onChange={(e) => {
                             setNewHabitName(e.target.value);
                             setShowSuggestions(e.target.value.length > 0);
-                          }}
+                          } }
                           onKeyPress={(e) => {
                             if (e.key === 'Enter') {
                               addHabitColumn();
                             }
-                          }}
-                          className={`px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'} w-32`}
-                        />
-                        
+                          } }
+                          className={`px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'} w-32`} />
+
                         {/* Suggestions dropdown */}
                         {showSuggestions && getHabitSuggestions(newHabitName).length > 0 && (
                           <div className={`absolute top-full left-0 mt-1 w-full ${darkMode ? 'bg-gray-700' : 'bg-white'} rounded-lg shadow-lg border ${darkMode ? 'border-gray-600' : 'border-gray-200'} z-10`}>
@@ -2011,7 +1995,7 @@ const handleHabitDrop = (e, dropIndex) => {
                                 onClick={() => {
                                   setNewHabitName(suggestion.name);
                                   addHabitColumn(suggestion.name);
-                                }}
+                                } }
                                 className={`w-full px-2 py-1 text-sm text-left flex items-center gap-2 ${darkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-100'}`}
                               >
                                 <span>{suggestion.icon}</span>
@@ -2050,7 +2034,7 @@ const handleHabitDrop = (e, dropIndex) => {
                             totalPossible += habitColumns.length;
                           });
                           const weeklyPercentage = totalPossible > 0 ? Math.round((totalCompleted / totalPossible) * 100) : 0;
-                          
+
                           return (
                             <>
                               <span>Total: {totalCompleted}/{totalPossible}</span>
@@ -2077,9 +2061,9 @@ const handleHabitDrop = (e, dropIndex) => {
                               key={habit.id}
                               className="px-2 py-2 text-center min-w-[60px] cursor-move relative"
                               draggable
-                             onDragStart={(e) => handleHabitDragStart(e, index)}
-                            onDragOver={handleHabitDragOver}
-                            onDrop={(e) => handleHabitDrop(e, index)}
+                              onDragStart={(e) => handleHabitDragStart(e, index)}
+                              onDragOver={handleHabitDragOver}
+                              onDrop={(e) => handleHabitDrop(e, index)}
                             >
                               <div className="flex flex-col items-center group">
                                 {editingHabit === habit.id ? (
@@ -2089,21 +2073,18 @@ const handleHabitDrop = (e, dropIndex) => {
                                       value={habit.icon}
                                       onChange={(e) => updateHabitIcon(habit.id, e.target.value.substring(0, 2))}
                                       className={`w-8 text-center text-lg ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`}
-                                      autoFocus
-                                    />
+                                      autoFocus />
                                     <input
                                       type="text"
                                       value={habit.label}
                                       onChange={(e) => updateHabitLabel(habit.id, e.target.value)}
-                                      className={`w-20 text-center text-xs ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`}
-                                    />
+                                      className={`w-20 text-center text-xs ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`} />
                                     <div className="flex items-center gap-1">
                                       <input
                                         type="checkbox"
                                         checked={habit.hasTarget}
                                         onChange={(e) => updateHabitTarget(habit.id, e.target.checked, habit.targetValue, habit.unit)}
-                                        className="w-3 h-3"
-                                      />
+                                        className="w-3 h-3" />
                                       <span className="text-xs">Target</span>
                                     </div>
                                     {habit.hasTarget && (
@@ -2112,16 +2093,14 @@ const handleHabitDrop = (e, dropIndex) => {
                                           type="number"
                                           value={habit.targetValue}
                                           onChange={(e) => updateHabitTarget(habit.id, habit.hasTarget, Number(e.target.value), habit.unit)}
-                                          className={`w-12 text-center text-xs ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`}
-                                        />
+                                          className={`w-12 text-center text-xs ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`} />
                                         <input
                                           type="text"
                                           value={habit.unit}
                                           onChange={(e) => updateHabitTarget(habit.id, habit.hasTarget, habit.targetValue, e.target.value)}
                                           onBlur={() => setEditingHabit(null)}
                                           onKeyPress={(e) => e.key === 'Enter' && setEditingHabit(null)}
-                                          className={`w-14 text-center text-xs ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`}
-                                        />
+                                          className={`w-14 text-center text-xs ${darkMode ? 'bg-gray-600' : 'bg-white'} rounded`} />
                                       </div>
                                     )}
                                   </div>
@@ -2172,7 +2151,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           const totalHabits = habitColumns.length;
                           const percentage = totalHabits > 0 ? Math.round((completedCount / totalHabits) * 100) : 0;
                           const isToday = dayInfo.dayName === '@Today';
-                          
+
                           return (
                             <tr key={dayIndex} className={`border-b ${darkMode ? 'border-gray-700' : 'border-gray-200'} ${isToday ? darkMode ? 'bg-blue-900/20' : 'bg-blue-50' : ''}`}>
                               <td className={`px-3 py-2 text-sm font-medium sticky left-0 ${isToday ? darkMode ? 'bg-blue-900/20' : 'bg-blue-50' : darkMode ? 'bg-gray-800' : 'bg-white'} ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -2182,24 +2161,21 @@ const handleHabitDrop = (e, dropIndex) => {
                                 const data = habitData[dayInfo.dayName]?.[habit.id] || { completed: false, value: 0 };
                                 const isCompleted = habit.hasTarget ? data.value >= habit.targetValue : data.completed;
                                 const progressPercent = habit.hasTarget ? Math.min(100, (data.value / habit.targetValue) * 100) : 0;
-                                
+
                                 return (
                                   <td key={habit.id} className="px-2 py-2 text-center">
                                     {habit.hasTarget ? (
                                       <button
                                         onClick={() => toggleHabit(dayInfo.dayName, habit.id)}
-                                        className={`relative w-12 h-6 rounded-full border-2 transition-all ${
-                                          isCompleted
+                                        className={`relative w-12 h-6 rounded-full border-2 transition-all ${isCompleted
                                             ? 'bg-green-500 border-green-500'
                                             : darkMode
-                                            ? 'border-gray-600 hover:border-gray-500'
-                                            : 'border-gray-300 hover:border-gray-400'
-                                        }`}
+                                              ? 'border-gray-600 hover:border-gray-500'
+                                              : 'border-gray-300 hover:border-gray-400'}`}
                                       >
                                         <div
                                           className="absolute left-0 top-0 h-full bg-blue-400 rounded-full transition-all"
-                                          style={{ width: `${progressPercent}%` }}
-                                        />
+                                          style={{ width: `${progressPercent}%` }} />
                                         <span className={`relative text-xs font-semibold ${isCompleted ? 'text-white' : darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                                           {data.value}/{habit.targetValue}
                                         </span>
@@ -2207,13 +2183,11 @@ const handleHabitDrop = (e, dropIndex) => {
                                     ) : (
                                       <button
                                         onClick={() => toggleHabit(dayInfo.dayName, habit.id)}
-                                        className={`w-6 h-6 rounded border-2 transition-all ${
-                                          data.completed
+                                        className={`w-6 h-6 rounded border-2 transition-all ${data.completed
                                             ? 'bg-blue-500 border-blue-500 transform scale-110'
                                             : darkMode
-                                            ? 'border-gray-600 hover:border-gray-500'
-                                            : 'border-gray-300 hover:border-gray-400'
-                                        }`}
+                                              ? 'border-gray-600 hover:border-gray-500'
+                                              : 'border-gray-300 hover:border-gray-400'}`}
                                       >
                                         {data.completed && (
                                           <span className="text-white text-xs">✓</span>
@@ -2230,20 +2204,15 @@ const handleHabitDrop = (e, dropIndex) => {
                                 <div className="flex items-center gap-2">
                                   <div className={`h-2 flex-1 ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} rounded-full overflow-hidden max-w-[100px]`}>
                                     <div
-                                      className={`h-full transition-all duration-300 ${
-                                        percentage >= 80 ? 'bg-green-500' :
-                                        percentage >= 60 ? 'bg-yellow-500' :
-                                        percentage >= 40 ? 'bg-orange-500' :
-                                        'bg-red-500'
-                                      }`}
-                                      style={{ width: `${percentage}%` }}
-                                    />
+                                      className={`h-full transition-all duration-300 ${percentage >= 80 ? 'bg-green-500' :
+                                          percentage >= 60 ? 'bg-yellow-500' :
+                                            percentage >= 40 ? 'bg-orange-500' :
+                                              'bg-red-500'}`}
+                                      style={{ width: `${percentage}%` }} />
                                   </div>
-                                  <span className={`text-xs font-semibold min-w-[35px] ${
-                                    percentage >= 80 ? 'text-green-500' :
-                                    percentage >= 60 ? 'text-yellow-500' :
-                                    'text-orange-500'
-                                  }`}>{percentage}%</span>
+                                  <span className={`text-xs font-semibold min-w-[35px] ${percentage >= 80 ? 'text-green-500' :
+                                      percentage >= 60 ? 'text-yellow-500' :
+                                        'text-orange-500'}`}>{percentage}%</span>
                                 </div>
                               </td>
                             </tr>
@@ -2291,8 +2260,7 @@ const handleHabitDrop = (e, dropIndex) => {
                               type="number"
                               value={tempQuantity}
                               onChange={(e) => setTempQuantity(Math.max(0, Number(e.target.value)))}
-                              className={`w-20 text-center text-2xl font-bold bg-transparent ${darkMode ? 'text-white' : 'text-gray-900'}`}
-                            />
+                              className={`w-20 text-center text-2xl font-bold bg-transparent ${darkMode ? 'text-white' : 'text-gray-900'}`} />
                             <p className="text-xs text-gray-500 mt-1">{currentHabitEdit.unit}</p>
                           </div>
                           <button
@@ -2319,11 +2287,8 @@ const handleHabitDrop = (e, dropIndex) => {
                         </div>
                         <div className={`h-3 ${darkMode ? 'bg-gray-700' : 'bg-gray-200'} rounded-full overflow-hidden`}>
                           <div
-                            className={`h-full transition-all duration-300 ${
-                              tempQuantity >= currentHabitEdit.targetValue ? 'bg-green-500' : 'bg-blue-500'
-                            }`}
-                            style={{ width: `${Math.min(100, (tempQuantity / currentHabitEdit.targetValue) * 100)}%` }}
-                          />
+                            className={`h-full transition-all duration-300 ${tempQuantity >= currentHabitEdit.targetValue ? 'bg-green-500' : 'bg-blue-500'}`}
+                            style={{ width: `${Math.min(100, (tempQuantity / currentHabitEdit.targetValue) * 100)}%` }} />
                         </div>
                       </div>
 
@@ -2350,11 +2315,9 @@ const handleHabitDrop = (e, dropIndex) => {
 
                       <button
                         onClick={updateHabitQuantity}
-                        className={`w-full mt-4 py-2 rounded-lg font-medium ${
-                          tempQuantity >= currentHabitEdit.targetValue
+                        className={`w-full mt-4 py-2 rounded-lg font-medium ${tempQuantity >= currentHabitEdit.targetValue
                             ? 'bg-green-600 text-white hover:bg-green-700'
-                            : 'bg-blue-600 text-white hover:bg-blue-700'
-                        } transition-colors`}
+                            : 'bg-blue-600 text-white hover:bg-blue-700'} transition-colors`}
                       >
                         {tempQuantity >= currentHabitEdit.targetValue ? 'Complete!' : 'Save Progress'}
                       </button>
@@ -2365,21 +2328,21 @@ const handleHabitDrop = (e, dropIndex) => {
                 {/* Second Row: To-Do List and Things in My Mind (Available without login) */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   {/* To-Do List Widget with Apple Reminders Features */}
-<div 
-  className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
-  onDrop={handleTodoDrop}
-  onDragOver={handleDragOver}
->
-  <div className="flex items-center justify-between mb-3">
-    <h2 className="text-base font-semibold flex items-center">
-      <CheckSquare className="mr-2" size={16} />
-      Reminders
-      {draggedItemType === 'mindNote' && (
-        <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full animate-pulse">
-          Drop to add task
-        </span>
-      )}
-    </h2>
+                  <div
+                    className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
+                    onDrop={handleTodoDrop}
+                    onDragOver={handleDragOver}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h2 className="text-base font-semibold flex items-center">
+                        <CheckSquare className="mr-2" size={16} />
+                        Reminders
+                        {draggedItemType === 'mindNote' && (
+                          <span className="ml-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full animate-pulse">
+                            Drop to add task
+                          </span>
+                        )}
+                      </h2>
                       <div className="flex items-center gap-2">
                         <span className="text-xs text-gray-500">{todos.filter(t => !t.completed).length} pending</span>
                         <button
@@ -2390,7 +2353,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         </button>
                       </div>
                     </div>
-                    
+
                     {/* Smart Lists and Categories */}
                     <div className="flex gap-1 mb-2 overflow-x-auto text-xs">
                       {[
@@ -2402,11 +2365,9 @@ const handleHabitDrop = (e, dropIndex) => {
                         <button
                           key={list.id}
                           onClick={() => setSelectedSmartList(list.id)}
-                          className={`px-2 py-1 rounded flex items-center gap-1 whitespace-nowrap ${
-                            selectedSmartList === list.id
+                          className={`px-2 py-1 rounded flex items-center gap-1 whitespace-nowrap ${selectedSmartList === list.id
                               ? darkMode ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white'
-                              : darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
-                          }`}
+                              : darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'}`}
                         >
                           <span>{list.icon}</span>
                           <span>{list.label}</span>
@@ -2420,11 +2381,9 @@ const handleHabitDrop = (e, dropIndex) => {
                         <button
                           key={list}
                           onClick={() => setSelectedList(list)}
-                          className={`px-2 py-1 rounded ${
-                            selectedList === list
+                          className={`px-2 py-1 rounded ${selectedList === list
                               ? darkMode ? 'bg-purple-600 text-white' : 'bg-purple-500 text-white'
-                              : darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'
-                          }`}
+                              : darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-100 hover:bg-gray-200'}`}
                         >
                           {list}
                         </button>
@@ -2446,8 +2405,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           onChange={(e) => setNewList(e.target.value)}
                           onKeyPress={(e) => e.key === 'Enter' && addList()}
                           placeholder="New list name..."
-                          className={`flex-1 px-2 py-1 text-xs rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                        />
+                          className={`flex-1 px-2 py-1 text-xs rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                         <button onClick={addList} className="px-2 py-1 text-xs bg-green-600 text-white rounded">
                           Add
                         </button>
@@ -2462,10 +2420,9 @@ const handleHabitDrop = (e, dropIndex) => {
                         value={searchTodo}
                         onChange={(e) => setSearchTodo(e.target.value)}
                         placeholder="Search..."
-                        className={`w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                      />
+                        className={`w-full pl-7 pr-2 py-1.5 text-sm rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                     </div>
-                    
+
                     {/* Add new todo */}
                     <div className="flex gap-2 mb-3">
                       <input
@@ -2474,8 +2431,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         onChange={(e) => setNewTodo(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && addTodo()}
                         placeholder="Add a reminder..."
-                        className={`flex-1 px-3 py-1.5 text-sm rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                      />
+                        className={`flex-1 px-3 py-1.5 text-sm rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                       <button
                         onClick={addTodo}
                         className="px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -2483,44 +2439,38 @@ const handleHabitDrop = (e, dropIndex) => {
                         <Plus size={16} />
                       </button>
                     </div>
-                    
-{/* Todo items */}
-<div className="space-y-1 max-h-64 overflow-y-auto">
-  {getFilteredTodos().map((todo, index) => (
-   <div 
-  key={todo.id} 
-  className={`group relative ${todo.completed ? 'opacity-60' : ''} ${
-    draggedOverIndex === index && isInternalDrag && draggedItemType === 'todo' 
-      ? 'border-t-2 border-blue-500' 
-      : ''
-  }`}
-  draggable={!todo.completed}
-  onDragStart={(e) => {
-    e.stopPropagation();
-    handleInternalDragStart(e, todo, index, 'todo');
-  }}
-  onDragOver={(e) => {
-    e.stopPropagation();
-    handleInternalDragOver(e, index);
-  }}
-  onDrop={(e) => {
-    e.stopPropagation();
-    handleInternalDrop(e, index, 'todo');
-  }}
-  onDragEnd={handleInternalDragEnd}
->
-      <div className={`flex items-start gap-2 p-2 rounded-lg ${
-        darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'
-      } ${selectedTodo?.id === todo.id ? 'ring-2 ring-blue-500' : ''} cursor-move transition-all ${
-        draggedItem?.id === todo.id ? 'opacity-50 scale-95' : ''
-      }`}>
+
+                    {/* Todo items */}
+                    <div className="space-y-1 max-h-64 overflow-y-auto">
+                      {getFilteredTodos().map((todo, index) => (
+                        <div
+                          key={todo.id}
+                          className={`group relative ${todo.completed ? 'opacity-60' : ''} ${draggedOverIndex === index && isInternalDrag && draggedItemType === 'todo'
+                              ? 'border-t-2 border-blue-500'
+                              : ''}`}
+                          draggable={!todo.completed}
+                          onDragStart={(e) => {
+                            e.stopPropagation();
+                            handleInternalDragStart(e, todo, index, 'todo');
+                          } }
+                          onDragOver={(e) => {
+                            e.stopPropagation();
+                            handleInternalDragOver(e, index);
+                          } }
+                          onDrop={(e) => {
+                            e.stopPropagation();
+                            handleInternalDrop(e, index, 'todo');
+                          } }
+                          onDragEnd={handleInternalDragEnd}
+                        >
+                          <div className={`flex items-start gap-2 p-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'} ${selectedTodo?.id === todo.id ? 'ring-2 ring-blue-500' : ''} cursor-move transition-all ${draggedItem?.id === todo.id ? 'opacity-50 scale-95' : ''}`}>
                             <button
                               onClick={() => toggleTodo(todo.id)}
                               className={`mt-0.5 ${todo.completed ? 'text-green-500' : 'text-gray-400'}`}
                             >
                               {todo.completed ? <CheckCircle size={16} /> : <Circle size={16} />}
                             </button>
-                            
+
                             <div className="flex-1 min-w-0">
                               <div className="flex items-start gap-2">
                                 {/* Priority indicator */}
@@ -2529,7 +2479,7 @@ const handleHabitDrop = (e, dropIndex) => {
                                     {getPriorityIcon(todo.priority)}
                                   </span>
                                 )}
-                                
+
                                 {/* Todo text */}
                                 <div className="flex-1">
                                   {editingTodoId === todo.id ? (
@@ -2540,40 +2490,37 @@ const handleHabitDrop = (e, dropIndex) => {
                                       onBlur={() => setEditingTodoId(null)}
                                       onKeyPress={(e) => e.key === 'Enter' && setEditingTodoId(null)}
                                       className={`w-full px-1 text-sm rounded ${darkMode ? 'bg-gray-600' : 'bg-white'}`}
-                                      autoFocus
-                                    />
+                                      autoFocus />
                                   ) : (
                                     <span
                                       className={`text-sm cursor-pointer ${todo.completed ? 'line-through' : ''}`}
                                       onClick={() => {
                                         setSelectedTodo(todo);
                                         setShowTodoDetails(true);
-                                      }}
+                                      } }
                                     >
                                       {todo.text}
                                     </span>
                                   )}
-                                  
+
                                   {/* Subtasks preview */}
                                   {todo.subtasks.length > 0 && (
                                     <div className="text-xs text-gray-500 mt-1">
                                       {todo.subtasks.filter(s => !s.completed).length}/{todo.subtasks.length} subtasks
                                     </div>
                                   )}
-                                  
+
                                   {/* Tags */}
                                   {todo.tags.length > 0 && (
                                     <div className="flex flex-wrap gap-1 mt-1">
                                       {todo.tags.map(tag => (
-                                        <span key={tag} className={`text-xs px-1.5 py-0.5 rounded-full ${
-                                          darkMode ? 'bg-gray-600' : 'bg-gray-200'
-                                        }`}>
+                                        <span key={tag} className={`text-xs px-1.5 py-0.5 rounded-full ${darkMode ? 'bg-gray-600' : 'bg-gray-200'}`}>
                                           #{tag}
                                         </span>
                                       ))}
                                     </div>
                                   )}
-                                  
+
                                   {/* Due date and time */}
                                   {todo.dueDate && (
                                     <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
@@ -2586,20 +2533,20 @@ const handleHabitDrop = (e, dropIndex) => {
                                       )}
                                     </div>
                                   )}
-                                  
+
                                   {/* Notes preview */}
                                   {todo.notes && (
                                     <p className="text-xs text-gray-500 mt-1 truncate">{todo.notes}</p>
                                   )}
                                 </div>
-                                
+
                                 {/* Flag indicator */}
                                 {todo.flagged && (
                                   <span className="text-orange-500">🚩</span>
                                 )}
                               </div>
                             </div>
-                            
+
                             {/* Action buttons */}
                             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                               <button
@@ -2624,7 +2571,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           </div>
                         </div>
                       ))}
-                      
+
                       {getFilteredTodos().length === 0 && (
                         <p className="text-center text-gray-500 text-sm py-4">No reminders</p>
                       )}
@@ -2641,7 +2588,7 @@ const handleHabitDrop = (e, dropIndex) => {
                             onClick={() => {
                               setShowTodoDetails(false);
                               setSelectedTodo(null);
-                            }}
+                            } }
                             className="text-gray-500 hover:text-gray-700"
                           >
                             <X size={20} />
@@ -2653,10 +2600,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           type="text"
                           value={selectedTodo.text}
                           onChange={(e) => updateTodo(selectedTodo.id, { text: e.target.value })}
-                          className={`w-full px-3 py-2 text-lg font-medium rounded-lg border mb-4 ${
-                            darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'
-                          }`}
-                        />
+                          className={`w-full px-3 py-2 text-lg font-medium rounded-lg border mb-4 ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
 
                         {/* Priority, List, and Flag */}
                         <div className="grid grid-cols-3 gap-3 mb-4">
@@ -2688,11 +2632,9 @@ const handleHabitDrop = (e, dropIndex) => {
                           <div className="flex items-end">
                             <button
                               onClick={() => updateTodo(selectedTodo.id, { flagged: !selectedTodo.flagged })}
-                              className={`w-full py-1 rounded ${
-                                selectedTodo.flagged
+                              className={`w-full py-1 rounded ${selectedTodo.flagged
                                   ? 'bg-orange-500 text-white'
-                                  : darkMode ? 'bg-gray-700' : 'bg-gray-200'
-                              }`}
+                                  : darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
                             >
                               🚩 Flag
                             </button>
@@ -2709,8 +2651,7 @@ const handleHabitDrop = (e, dropIndex) => {
                               onChange={(e) => updateTodo(selectedTodo.id, {
                                 dueDate: e.target.value ? new Date(e.target.value).toISOString() : null
                               })}
-                              className={`w-full px-2 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                            />
+                              className={`w-full px-2 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                           </div>
                           <div>
                             <label className="text-xs text-gray-500">Time</label>
@@ -2718,8 +2659,7 @@ const handleHabitDrop = (e, dropIndex) => {
                               type="time"
                               value={selectedTodo.dueTime || ''}
                               onChange={(e) => updateTodo(selectedTodo.id, { dueTime: e.target.value })}
-                              className={`w-full px-2 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                            />
+                              className={`w-full px-2 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                           </div>
                         </div>
 
@@ -2752,12 +2692,10 @@ const handleHabitDrop = (e, dropIndex) => {
                                   } else {
                                     addTag(selectedTodo.id, tag);
                                   }
-                                }}
-                                className={`px-2 py-1 text-xs rounded-full ${
-                                  selectedTodo.tags.includes(tag)
+                                } }
+                                className={`px-2 py-1 text-xs rounded-full ${selectedTodo.tags.includes(tag)
                                     ? 'bg-blue-500 text-white'
-                                    : darkMode ? 'bg-gray-700' : 'bg-gray-200'
-                                }`}
+                                    : darkMode ? 'bg-gray-700' : 'bg-gray-200'}`}
                               >
                                 #{tag}
                               </button>
@@ -2773,8 +2711,7 @@ const handleHabitDrop = (e, dropIndex) => {
                             onChange={(e) => updateTodo(selectedTodo.id, { notes: e.target.value })}
                             placeholder="Add notes..."
                             rows={3}
-                            className={`w-full px-2 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                          />
+                            className={`w-full px-2 py-1 rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                         </div>
 
                         {/* Subtasks */}
@@ -2808,9 +2745,8 @@ const handleHabitDrop = (e, dropIndex) => {
                                   addSubtask(selectedTodo.id, e.target.value);
                                   e.target.value = '';
                                 }
-                              }}
-                              className={`w-full px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                            />
+                              } }
+                              className={`w-full px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                           </div>
                         </div>
 
@@ -2818,7 +2754,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           onClick={() => {
                             setShowTodoDetails(false);
                             setSelectedTodo(null);
-                          }}
+                          } }
                           className="w-full py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
                         >
                           Done
@@ -2827,25 +2763,25 @@ const handleHabitDrop = (e, dropIndex) => {
                     </div>
                   )}
 
-{/* Things in My Mind Widget */}
-<div 
-  className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
-  onDrop={handleMindNoteDrop}
-  onDragOver={handleDragOver}
->
-  <div className="flex items-center justify-between mb-3">
-    <h2 className="text-base font-semibold flex items-center">
-      <Brain className="mr-2" size={16} />
-      Things in My Mind
-      {draggedItemType === 'todo' && (
-        <span className="ml-2 px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full animate-pulse">
-          Drop to add thought
-        </span>
-      )}
-    </h2>
-    <span className="text-xs text-gray-500">{mindNotes.length} notes</span>
-  </div>
-                    
+                  {/* Things in My Mind Widget */}
+                  <div
+                    className={`${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4 shadow-lg`}
+                    onDrop={handleMindNoteDrop}
+                    onDragOver={handleDragOver}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <h2 className="text-base font-semibold flex items-center">
+                        <Brain className="mr-2" size={16} />
+                        Things in My Mind
+                        {draggedItemType === 'todo' && (
+                          <span className="ml-2 px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full animate-pulse">
+                            Drop to add thought
+                          </span>
+                        )}
+                      </h2>
+                      <span className="text-xs text-gray-500">{mindNotes.length} notes</span>
+                    </div>
+
                     {/* Add new note */}
                     <div className="flex gap-2 mb-3">
                       <input
@@ -2854,8 +2790,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         onChange={(e) => setNewMindNote(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && addMindNote()}
                         placeholder="What's on your mind..."
-                        className={`flex-1 px-3 py-1.5 text-sm rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                      />
+                        className={`flex-1 px-3 py-1.5 text-sm rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                       <button
                         onClick={addMindNote}
                         className="px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
@@ -2863,35 +2798,31 @@ const handleHabitDrop = (e, dropIndex) => {
                         <Plus size={16} />
                       </button>
                     </div>
-                    
+
                     {/* Notes list */}
-<div className="space-y-2 max-h-48 overflow-y-auto">
-  {mindNotes.map((note, index) => (
-    <div 
-  key={note.id} 
-  className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'} cursor-move transition-all ${
-    draggedItem?.id === note.id ? 'opacity-50 scale-95' : ''
-  } ${
-    draggedOverIndex === index && isInternalDrag && draggedItemType === 'mindNote' 
-      ? 'border-t-2 border-purple-500' 
-      : ''
-  }`}
-  draggable
-  onDragStart={(e) => {
-    e.stopPropagation();
-    handleInternalDragStart(e, note, index, 'mindNote');
-  }}
-  onDragOver={(e) => {
-    e.stopPropagation();
-    handleInternalDragOver(e, index);
-  }}
-  onDrop={(e) => {
-    e.stopPropagation();
-    handleInternalDrop(e, index, 'mindNote');
-  }}
-  onDragEnd={handleInternalDragEnd}
->
-      <p className="text-sm">{note.text}</p>
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {mindNotes.map((note, index) => (
+                        <div
+                          key={note.id}
+                          className={`p-2 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-50'} cursor-move transition-all ${draggedItem?.id === note.id ? 'opacity-50 scale-95' : ''} ${draggedOverIndex === index && isInternalDrag && draggedItemType === 'mindNote'
+                              ? 'border-t-2 border-purple-500'
+                              : ''}`}
+                          draggable
+                          onDragStart={(e) => {
+                            e.stopPropagation();
+                            handleInternalDragStart(e, note, index, 'mindNote');
+                          } }
+                          onDragOver={(e) => {
+                            e.stopPropagation();
+                            handleInternalDragOver(e, index);
+                          } }
+                          onDrop={(e) => {
+                            e.stopPropagation();
+                            handleInternalDrop(e, index, 'mindNote');
+                          } }
+                          onDragEnd={handleInternalDragEnd}
+                        >
+                          <p className="text-sm">{note.text}</p>
                           <div className="flex justify-between items-center mt-1">
                             <span className="text-xs text-gray-500">
                               {new Date(note.date).toLocaleDateString()}
@@ -2928,7 +2859,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         Add Link
                       </button>
                     </div>
-                    
+
                     {/* Add link form */}
                     {showAddLink && (
                       <div className={`p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} mb-3`}>
@@ -2936,16 +2867,14 @@ const handleHabitDrop = (e, dropIndex) => {
                           type="text"
                           placeholder="Title"
                           value={newLink.title}
-                          onChange={(e) => setNewLink({...newLink, title: e.target.value})}
-                          className={`w-full px-2 py-1 text-sm rounded border mb-2 ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`}
-                        />
+                          onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
+                          className={`w-full px-2 py-1 text-sm rounded border mb-2 ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`} />
                         <input
                           type="url"
                           placeholder="URL"
                           value={newLink.url}
-                          onChange={(e) => setNewLink({...newLink, url: e.target.value})}
-                          className={`w-full px-2 py-1 text-sm rounded border mb-2 ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`}
-                        />
+                          onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+                          className={`w-full px-2 py-1 text-sm rounded border mb-2 ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`} />
                         <div className="flex gap-2">
                           <button
                             onClick={addUrlLink}
@@ -2957,7 +2886,7 @@ const handleHabitDrop = (e, dropIndex) => {
                             onClick={() => {
                               setShowAddLink(false);
                               setNewLink({ title: '', url: '' });
-                            }}
+                            } }
                             className="flex-1 py-1 text-sm bg-gray-600 text-white rounded hover:bg-gray-700"
                           >
                             Cancel
@@ -2965,32 +2894,30 @@ const handleHabitDrop = (e, dropIndex) => {
                         </div>
                       </div>
                     )}
-                    
+
                     {/* Links list */}
-<div className="space-y-2 max-h-48 overflow-y-auto">
-  {urlLinks.map((link, index) => (
-                        <div 
-  key={link.id} 
-  className={`flex items-center gap-2 p-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'} transition-colors cursor-move ${
-    draggedOverIndex === index && isInternalDrag && draggedItemType === 'urlLink' 
-      ? 'border-t-2 border-blue-500' 
-      : ''
-  }`}
-  draggable
-  onDragStart={(e) => {
-    e.stopPropagation();
-    handleInternalDragStart(e, link, index, 'urlLink');
-  }}
-  onDragOver={(e) => {
-    e.stopPropagation();
-    handleInternalDragOver(e, index);
-  }}
-  onDrop={(e) => {
-    e.stopPropagation();
-    handleInternalDrop(e, index, 'urlLink');
-  }}
-  onDragEnd={handleInternalDragEnd}
->
+                    <div className="space-y-2 max-h-48 overflow-y-auto">
+                      {urlLinks.map((link, index) => (
+                        <div
+                          key={link.id}
+                          className={`flex items-center gap-2 p-2 rounded-lg ${darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-50 hover:bg-gray-100'} transition-colors cursor-move ${draggedOverIndex === index && isInternalDrag && draggedItemType === 'urlLink'
+                              ? 'border-t-2 border-blue-500'
+                              : ''}`}
+                          draggable
+                          onDragStart={(e) => {
+                            e.stopPropagation();
+                            handleInternalDragStart(e, link, index, 'urlLink');
+                          } }
+                          onDragOver={(e) => {
+                            e.stopPropagation();
+                            handleInternalDragOver(e, index);
+                          } }
+                          onDrop={(e) => {
+                            e.stopPropagation();
+                            handleInternalDrop(e, index, 'urlLink');
+                          } }
+                          onDragEnd={handleInternalDragEnd}
+                        >
                           <a
                             href={link.url}
                             target="_blank"
@@ -3125,16 +3052,14 @@ const handleHabitDrop = (e, dropIndex) => {
                     <Users className="mr-2" size={20} />
                     Portfolio Management Dashboard
                   </h2>
-                  
+
                   {/* Client Selection Tabs */}
                   <div className="flex space-x-2 mb-4 overflow-x-auto">
                     <button
                       onClick={() => setSelectedPortfolioClient('all')}
-                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                        selectedPortfolioClient === 'all'
+                      className={`px-4 py-2 rounded-lg font-medium transition-colors ${selectedPortfolioClient === 'all'
                           ? 'bg-blue-600 text-white'
-                          : darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-                      }`}
+                          : darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'}`}
                     >
                       All Clients
                     </button>
@@ -3142,28 +3067,24 @@ const handleHabitDrop = (e, dropIndex) => {
                       <button
                         key={key}
                         onClick={() => setSelectedPortfolioClient(key)}
-                        className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${
-                          selectedPortfolioClient === key
+                        className={`px-4 py-2 rounded-lg font-medium transition-colors whitespace-nowrap ${selectedPortfolioClient === key
                             ? 'bg-blue-600 text-white'
-                            : darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-                        }`}
+                            : darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'}`}
                       >
                         {client.name}
                       </button>
                     ))}
                   </div>
-                  
+
                   {/* View Options */}
                   <div className="flex space-x-2">
                     {['overview', 'performance', 'risk', 'allocation'].map((view) => (
                       <button
                         key={view}
                         onClick={() => setPortfolioView(view)}
-                        className={`px-3 py-1 text-sm rounded capitalize ${
-                          portfolioView === view
+                        className={`px-3 py-1 text-sm rounded capitalize ${portfolioView === view
                             ? 'bg-purple-600 text-white'
-                            : darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'
-                        }`}
+                            : darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700'}`}
                       >
                         {view}
                       </button>
@@ -3186,15 +3107,13 @@ const handleHabitDrop = (e, dropIndex) => {
                             contentStyle={{
                               backgroundColor: darkMode ? '#1F2937' : '#FFFFFF',
                               border: `1px solid ${darkMode ? '#374151' : '#E5E7EB'}`
-                            }}
-                          />
+                            }} />
                           <Line
                             type="monotone"
                             dataKey="returns"
                             stroke="#3B82F6"
                             strokeWidth={2}
-                            dot={{ fill: '#3B82F6' }}
-                          />
+                            dot={{ fill: '#3B82F6' }} />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>
@@ -3239,8 +3158,7 @@ const handleHabitDrop = (e, dropIndex) => {
                             contentStyle={{
                               backgroundColor: darkMode ? '#1F2937' : '#FFFFFF',
                               border: `1px solid ${darkMode ? '#374151' : '#E5E7EB'}`
-                            }}
-                          />
+                            }} />
                           <Bar dataKey="profit" fill="#10B981" />
                           <Bar dataKey="loss" fill="#EF4444" />
                           <Bar dataKey="net" fill="#3B82F6" />
@@ -3261,22 +3179,19 @@ const handleHabitDrop = (e, dropIndex) => {
                             contentStyle={{
                               backgroundColor: darkMode ? '#1F2937' : '#FFFFFF',
                               border: `1px solid ${darkMode ? '#374151' : '#E5E7EB'}`
-                            }}
-                          />
+                            }} />
                           <Area
                             type="monotone"
                             dataKey="returns"
                             stroke="#8B5CF6"
                             fill="#8B5CF6"
-                            fillOpacity={0.3}
-                          />
+                            fillOpacity={0.3} />
                           <Area
                             type="monotone"
                             dataKey="clients"
                             stroke="#10B981"
                             fill="#10B981"
-                            fillOpacity={0.3}
-                          />
+                            fillOpacity={0.3} />
                         </AreaChart>
                       </ResponsiveContainer>
                     </div>
@@ -3423,7 +3338,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         <option value="commodities">Commodities</option>
                         <option value="others">Other Assets</option>
                       </select>
-                      
+
                       {/* Display Available Capital for Selected Asset Class */}
                       <div className={`mt-3 p-3 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'}`}>
                         <div className="grid grid-cols-3 gap-4 text-sm">
@@ -3435,10 +3350,10 @@ const handleHabitDrop = (e, dropIndex) => {
                             <span className="text-gray-500">Deployed:</span>
                             <p className="font-semibold text-orange-500">₹{(
                               assetClass === 'equity' ? capitalAllocation.equity.deployed :
-                              assetClass === 'equity-options' ? capitalAllocation.options.deployed :
-                              assetClass === 'futures' ? capitalAllocation.futures.deployed :
-                              assetClass === 'commodities' ? capitalAllocation.commodities.deployed :
-                              0
+                                assetClass === 'equity-options' ? capitalAllocation.options.deployed :
+                                  assetClass === 'futures' ? capitalAllocation.futures.deployed :
+                                    assetClass === 'commodities' ? capitalAllocation.commodities.deployed :
+                                      0
                             ).toLocaleString()}</p>
                           </div>
                           <div>
@@ -3459,8 +3374,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         value={riskPercentage}
                         onChange={(e) => setRiskPercentage(Number(e.target.value))}
                         step="0.1"
-                        className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                      />
+                        className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                     </div>
 
                     <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-gray-100'} mb-6`}>
@@ -3487,33 +3401,28 @@ const handleHabitDrop = (e, dropIndex) => {
                           value={searchSymbol}
                           onChange={(e) => setSearchSymbol(e.target.value)}
                           placeholder="e.g., RELIANCE, NIFTY"
-                          className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                        />
+                          className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">Trade Type</label>
                         <div className="flex space-x-2">
                           <button
                             onClick={() => setTradeType('LONG')}
-                            className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                              tradeType === 'LONG'
+                            className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${tradeType === 'LONG'
                                 ? 'bg-green-600 text-white'
                                 : darkMode
                                   ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                           >
                             LONG
                           </button>
                           <button
                             onClick={() => setTradeType('SHORT')}
-                            className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${
-                              tradeType === 'SHORT'
+                            className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${tradeType === 'SHORT'
                                 ? 'bg-red-600 text-white'
                                 : darkMode
                                   ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                            }`}
+                                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300'}`}
                           >
                             SHORT
                           </button>
@@ -3532,8 +3441,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           value={entryPrice}
                           onChange={(e) => setEntryPrice(e.target.value)}
                           step="0.01"
-                          className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                        />
+                          className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                       </div>
                       <div>
                         <label className="block text-sm font-medium mb-2">Stop Loss (₹)</label>
@@ -3542,8 +3450,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           value={stopLoss}
                           onChange={(e) => setStopLoss(e.target.value)}
                           step="0.01"
-                          className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`}
-                        />
+                          className={`w-full px-3 py-2 rounded-lg border ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-white border-gray-300'}`} />
                       </div>
                     </div>
 
@@ -3649,19 +3556,16 @@ const handleHabitDrop = (e, dropIndex) => {
                                 <div className="flex items-center space-x-3 mb-2">
                                   <input
                                     type="text"
-                                    placeholder={
-                                      target.type === 'ratio' ? '6' :
+                                    placeholder={target.type === 'ratio' ? '6' :
                                       target.type === 'number' ? '2500' :
-                                      '5'
-                                    }
+                                        '5'}
                                     value={target.value}
                                     onChange={(e) => {
                                       const newTargets = [...customTargets];
                                       newTargets[index].value = e.target.value;
                                       setCustomTargets(newTargets);
-                                    }}
-                                    className={`flex-1 px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`}
-                                  />
+                                    } }
+                                    className={`flex-1 px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`} />
                                   <span className="text-sm text-gray-500 min-w-[60px]">
                                     {target.type === 'ratio' ? '1:X' : target.type === 'number' ? '₹' : '%'}
                                   </span>
@@ -3721,9 +3625,7 @@ const handleHabitDrop = (e, dropIndex) => {
                         <div className="flex items-center justify-between mb-2">
                           <div>
                             <span className="font-medium">{item.symbol}</span>
-                            <span className={`ml-2 px-2 py-1 rounded-full text-xs ${
-                              item.tradeType === 'LONG' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                            }`}>
+                            <span className={`ml-2 px-2 py-1 rounded-full text-xs ${item.tradeType === 'LONG' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                               {item.tradeType}
                             </span>
                             <span className="text-sm text-gray-500 ml-2">{item.date}</span>
@@ -3746,7 +3648,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           <p>Qty: {item.quantity} | Investment: ₹{item.investment.toLocaleString()}</p>
                           <p>Risk: ₹{item.riskAmount.toLocaleString()}</p>
                         </div>
-                        
+
                         {/* Targets Display */}
                         <div className="mt-2 pt-2 border-t border-gray-600">
                           <p className="text-xs font-medium text-gray-400 mb-1">Targets:</p>
@@ -3827,7 +3729,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           <div key={index} className="flex-1 flex flex-col items-center">
                             <div
                               className="w-full bg-blue-500 rounded-t"
-                              style={{height: `${(height/160) * 100}%`}}
+                              style={{ height: `${(height / 160) * 100}%` }}
                             ></div>
                             <span className="text-xs mt-2">M{index + 1}</span>
                           </div>
@@ -3886,8 +3788,7 @@ const handleHabitDrop = (e, dropIndex) => {
                                 type="checkbox"
                                 checked={col.visible}
                                 onChange={() => toggleColumn(col.key)}
-                                className="mr-1"
-                              />
+                                className="mr-1" />
                               <span className="truncate">{col.label}</span>
                             </label>
                           ))}
@@ -3899,8 +3800,7 @@ const handleHabitDrop = (e, dropIndex) => {
                           placeholder="Add custom column..."
                           value={newColumnName}
                           onChange={(e) => setNewColumnName(e.target.value)}
-                          className={`flex-1 px-3 py-1 text-sm rounded border ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`}
-                        />
+                          className={`flex-1 px-3 py-1 text-sm rounded border ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`} />
                         <button
                           onClick={addCustomColumn}
                           className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -3954,8 +3854,7 @@ const handleHabitDrop = (e, dropIndex) => {
                                       type={col.key === 'capital' || col.key === 'entry' || col.key === 'sl' || col.key === 'risk' ? 'number' : 'text'}
                                       value={entry[col.key] || ''}
                                       onChange={(e) => updateJournalEntry(entry.id, col.key, e.target.value)}
-                                      className={`w-full px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`}
-                                    />
+                                      className={`w-full px-2 py-1 text-sm rounded border ${darkMode ? 'bg-gray-600 border-gray-500' : 'bg-white border-gray-300'}`} />
                                   )
                                 ) : (
                                   <div>
@@ -4023,6 +3922,7 @@ const handleHabitDrop = (e, dropIndex) => {
       </div>
     </div>
   );
-;
+  ;
+}
+  export default TradingDashboard;
 
-export default TradingDashboard;
